@@ -45,6 +45,52 @@ class BitbucketProjectResourceConfig(ResourceConfig):
     selector: BitbucketSelector
 
 
+class BitbucketRepositoryResourceConfig(ResourceConfig):
+    class BitbucketSelector(Selector):
+        query: str
+        include_private: bool = Field(
+            default=True,
+            description="If set to true, it includes private repositories. Default value is true.",
+            alias="includePrivate",
+        )
+        include_archived: bool = Field(
+            default=False,
+            description="If set to true, it includes archived repositories. Default value is false.",
+            alias="includeArchived",
+        )
+
+    kind: Literal["repository"]
+    selector: BitbucketSelector
+
+
+class BitbucketPullRequestResourceConfig(ResourceConfig):
+    class BitbucketSelector(Selector):
+        query: str
+        states: List[str] = Field(
+            default=["OPEN", "MERGED", "DECLINED", "SUPERSEDED"],
+            description="List of pull request states to include. Possible values are: OPEN, MERGED, DECLINED, SUPERSEDED.",
+        )
+        include_comments: bool = Field(
+            default=True,
+            description="If set to true, it includes pull request comments. Default value is true.",
+            alias="includeComments",
+        )
+        include_activity: bool = Field(
+            default=True,
+            description="If set to true, it includes pull request activity (updates, approvals, etc). Default value is true.",
+            alias="includeActivity",
+        )
+        max_age_days: int = Field(
+            default=30,
+            description="Maximum age in days for non-open pull requests to be included. Default value is 30 days.",
+            alias="maxAgeDays",
+            ge=1
+        )
+
+    kind: Literal["pull-request"]
+    selector: BitbucketSelector
+
+
 class GitManipulationHandler(JQEntityProcessor):
     async def _search(self, data: Dict[str, Any], pattern: str) -> Any:
         entity_processor: Type[JQEntityProcessor]
@@ -71,7 +117,9 @@ class GitPortAppConfig(PortAppConfig):
     )
     branch: str = "main"
     resources: list[
-        BitbucketProjectResourceConfig
+        BitbucketProjectResourceConfig |
+        BitbucketRepositoryResourceConfig |
+        BitbucketPullRequestResourceConfig
     ] = Field(default_factory=list)
 
 

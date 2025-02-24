@@ -28,8 +28,8 @@ class BitbucketClient(HTTPBaseClient):
         if cache := event.attributes.get("bitbucket_client"):
             return cache
         bitbucket_client = cls(
-            ocean.integration_config["workspace"],
-            ocean.integration_config["personal_access_token"],
+            ocean.integration_config["bitbucketWorkspace"],
+            ocean.integration_config["bitbucketPassword"],
         )
         event.attributes["bitbucket_client"] = bitbucket_client
         return bitbucket_client

@@ -4,12 +4,21 @@ features:
   - type: exporter
     section: Under Development  # Should be one of the available sections in Port
     resources:
-      - kind: bitbucket-example-kind
-      # - kind: <ResourceName2>
+      - kind: project
 configurations:
-  - name: mybitbucketToken
-    # required: true
+  - name: bitbucketUsername
     type: string
+    required: true
+    description: Your Bitbucket username
+  - name: bitbucketPassword
+    type: string
+    required: true
     sensitive: true
-  - name: someApplicationUrl
-    type: url
+    description: Your Bitbucket app password or token
+  - name: bitbucketWorkspace
+    type: string
+    required: true
+    description: Your Bitbucket workspace name
+  - name: bitbucketServerUrl
+    type: string
+    description: Your Bitbucket server URL (only for self-hosted instances)

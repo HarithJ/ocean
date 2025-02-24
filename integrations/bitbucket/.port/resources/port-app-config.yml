@@ -1,16 +1,17 @@
 resources:
-  - kind: bitbucket-example-kind
+  - kind: project
     selector:
       query: 'true'
+      defaultTeam: false
     port:
       entity:
         mappings:
-          identifier: .my_custom_id
-          title: '(.my_component + " @ " + .my_service)'
-          blueprint: '"bitbucketExampleBlueprint"'
+          identifier: .key
+          title: .name
+          blueprint: '"bitbucketProjectBlueprint"'
           properties:
-            status: .my_enum
-            text: .my_custom_text
-            component: .my_component
-            service: .my_service
-            score: .my_special_score
+            description: .description
+            key: .key
+            public: .public
+            type: .type
+            links: .links
